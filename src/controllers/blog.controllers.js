@@ -70,4 +70,10 @@ const loginUser=async(req,res)=>{
 }
 
 
-export {registerUser,loginUser}
+// logout user
+const logoutUser=async(req,res)=>{
+    res.clearCookie("refreshtoken")
+    res.json({message:"successfully login"})
+}
+
+export {registerUser,loginUser,logoutUser}
