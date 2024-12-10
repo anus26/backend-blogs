@@ -37,19 +37,15 @@ app.post("/encryptpassword",(req,res)=>{
             });
             
           })
-          // checkedpassword
-          app.post("/checkedpassword",(req,res)=>{
+         app.post("/checkedpassword",(req,res)=>{
             const {password}=req.body
             bcrypt.compare(password, encryptpassword, function(err, result) {
               if(err) return res.status(402).json({message:"error"})
                 if(result) return res.json({message:"password is correct"})
-                  res.status(404).json({message:"incorrect password"})
-});
+   res.status(404).json({message:"incorrect password"})
+})   // checkedpassword
+        ;
  })
-
-
-
-
 // genreatetoken
 app.post("/genreatetoken",(req,res)=>{
     const {email}=req.body
