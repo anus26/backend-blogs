@@ -1,4 +1,5 @@
 import {User} from "../models/blog.models.js";
+import { Blog } from "../models/blog.models.js";
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
 
@@ -69,11 +70,71 @@ const loginUser=async(req,res)=>{
     })
 }
 
-
+9
 // logout user
 const logoutUser=async(req,res)=>{
     res.clearCookie("refreshtoken")
     res.json({message:"successfully login"})
 }
 
-export {registerUser,loginUser,logoutUser}
+// const Blogtitledescription = async (req, res) => {
+//     try {
+//         const { title, description } = req.body;
+
+//         // Validate inputs
+//         if (!title) return res.status(400).json({ message: "Title is required" });
+//         if (!description) return res.status(400).json({ message: "Description is required" });
+
+        // Search for blog post
+//         const blog = await Blog.findOne({ title, description });
+//         if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+//         res.status(200).json({
+//             message: "Successfully fetched the blog",
+//             data: newblog,
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             message: "Internal Server Error",
+//             error: error.message,
+//         });
+//     }
+// };
+
+
+const createBlog = async (req, res) => {
+    try {
+      const { title, description } = req.body;
+  
+      // Validate inputs
+      if (!title || !description)
+        return res.status(400).json({ message: "Title and description are required" });
+  
+      // Check if the blog already exists
+      const existingBlog = await Blog.findOne({ title, description });
+      if (existingBlog)
+        return res.status(409).json({ message: "Blog already exists" });
+  
+      // Create new blog post
+      const newBlog = await Blog.create({
+        title,
+        description,
+        postedBy: req.userId || "64ffedb80abc123456789abc",  // Placeholder for testing
+      });
+  
+      res.status(201).json({
+        message: "Blog created successfully",
+        data: newBlog,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal Server Error",
+        error: error.message,
+      });
+    }
+  };
+  
+
+
+
+export {registerUser,loginUser,logoutUser,createBlog}
